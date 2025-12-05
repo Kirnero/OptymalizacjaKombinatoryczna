@@ -2,11 +2,16 @@
 
 # **Szukanie grafow calkowitych (integral graphs)**
 n=15, k=66
---> zadeklarowane w misc.h jako number_of_vertices i number_of_edges.
-Tak, jest hardcoded
+--> Jezeli chcemy inne, to podajemy jako pierwszy i drugi argument przy odpaleniu
 
 ## Kompilacja
-W głównym katalogu (tym z Makefile) wpisać w terminal "make all". Stworzy to plik "main" w tym samym katalogu ktory wystarczy odpalić ("./main"). Może dodam do niego parametry później.
+W głównym katalogu (tym z Makefile) wpisać w terminal "make all". Stworzy to plik "main" w tym samym katalogu ktory wystarczy odpalić ("./main"). 
+
+Parametry "./main a b c d", (opcjonalne):
+- a - liczba wierzcholkow
+- b - liczba krawedzi
+- c - konfiguracja losowosci algorytmu zachlannego, najlepiej dac 0 - wtedy algorytm sam sobie dobierze liczbe
+- d - ile chcemy znalezc grafow calkowitych algorytmem zachlannym ulosowionym
 
 Mogą się wyświetlać błędy z plikami header, ale jak się korzysta z Makefile'a to wszystko jest ok
 

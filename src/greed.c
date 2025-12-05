@@ -1,5 +1,7 @@
 #include "greed.h"
 
+int NUMBER_OF_FOUND_GRAPHS=0;
+
 void greed_add_edge(Graph *graph, Edge *candidates, int candidates_count){
     // To ensure there are no duplicate calculations, while still being random
     int count=0;
@@ -64,6 +66,7 @@ int greed_graph(Graph *graph){
 // Makes sure to find an integral graph
 void greed_integral_graph(){
     int found = 0;
+    int proba = 0;
     Graph graph;
     while(!found){
         initialize_graph(&graph);
@@ -72,7 +75,8 @@ void greed_integral_graph(){
             save_graph(&graph, "greed_graphs");
             
         }
-        printout(&graph);
+        printf("Proba od ostaniego grafu nr. %d,\t Znaleziono: %d\n",proba, NUMBER_OF_FOUND_GRAPHS);
+        proba++;
         clean_memory(&graph);
     }
 }
@@ -81,5 +85,6 @@ void greed_integral_graph(){
 void greed_all_integral_graph(){
     for(int i = 0; i<GREED_TARGET_NUMBER; i++){
         greed_integral_graph();
+        NUMBER_OF_FOUND_GRAPHS++;
     }
 }
