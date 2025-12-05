@@ -22,6 +22,7 @@ int main(int argc, char* argv[]) {
         GREED_RAND_CANDIDATES = (floor(NUMBER_OF_EDGES_MAX*0.33) < NUMBER_OF_EDGES_MAX-NUMBER_OF_EDGES) ? floor(NUMBER_OF_EDGES_MAX*0.33) : NUMBER_OF_EDGES_MAX-NUMBER_OF_EDGES;
     }
     
+    srand(time(NULL));
     greed_all_integral_graph();
 
     return 0;

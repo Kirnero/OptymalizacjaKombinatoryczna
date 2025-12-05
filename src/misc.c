@@ -11,7 +11,6 @@ void initialize_graph(Graph *graph){
     graph->greed_integrity_score = 0;
 
     // Zmienia graf zerowy na losowy spojny
-    srand(time(NULL));
     for (int i = 1; i < NUMBER_OF_VERTICES; i++) {
         int parent = rand() % i;
         graph->matrix[i][parent] = graph->matrix[parent][i] = 1;
@@ -29,12 +28,10 @@ void clean_memory(Graph *graph){
 
 // Wypisuje macierz sasiedztwa
 void printout(Graph *graph){
-    for(int i = 0; i<NUMBER_OF_VERTICES; i++){
-        for(int j = 0; j<NUMBER_OF_VERTICES; j++){
-            printf("%d ", graph->matrix[i][j]);
-        }
-        printf("\n");
+    for(int i = 0; i<NUMBER_OF_EDGES; i++){
+        printf("%d -- %d\n", graph->list_of_edges[i].u, graph->list_of_edges[i].v);
     }
+    printf("\n\n");
 }
 
 void draw(Graph *graph){

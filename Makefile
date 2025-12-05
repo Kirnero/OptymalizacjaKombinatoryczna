@@ -24,7 +24,7 @@ _OBJ = $(_DEPS:.h=.o) main.o
 
 # This is in C, so gcc it is
 CC=gcc
-CFLAGS = -I$(INCLUDE_DIR) -lgsl -lgslcblas -lm
+CFLAGS = -I$(INCLUDE_DIR) -lgsl -lgslcblas -lm -Wall -Wextra
 
 
 

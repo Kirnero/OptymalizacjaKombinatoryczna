@@ -2,23 +2,29 @@
 
 void greed_add_edge(Graph *graph, Edge *candidates, int candidates_count){
     // To ensure there are no duplicate calculations, while still being random
-    for(int i = 0; i<GREED_RAND_CANDIDATES; i++){
-        int random_index = i + rand() % (candidates_count - i);
-        swap_edges(&candidates[i], &candidates[random_index]);
+    int count=0;
+    while(count!=GREED_RAND_CANDIDATES){
+        int random_index = count + rand() % (candidates_count - count);
+        if(candidates[random_index].u==-1) continue;
+        swap_edges(&candidates[count], &candidates[random_index]);
+        count++;
     }
 
     Edge winner = candidates[0];
-    double winners_score=0;
+    double winners_score=0-NUMBER_OF_EDGES; // just a big negative number
+    int winners_index=0;
     for(int i = 0; i<GREED_RAND_CANDIDATES; i++){
         add_edge(graph, candidates[i]);
         calculate_greedy_score(graph);
         if(winners_score < graph->greed_integrity_score){
             winner = candidates[i];
             winners_score = graph->greed_integrity_score;
+            winners_index = i;
         }
         delete_edge(graph, candidates[i]);
     }
     add_edge(graph, winner);
+    candidates[winners_index] = (Edge){-1,-1};
     calculate_greedy_score(graph);
 }
 
@@ -26,8 +32,9 @@ void greed_add_edge(Graph *graph, Edge *candidates, int candidates_count){
 // Returns 0 if not integral, 1 if integral
 int greed_graph(Graph *graph){
     // Stworzenie grafu spojnego
-    initialize_graph(graph);
     
+    
+
     int count = 0;
     Edge candidates[NUMBER_OF_EDGES_MAX-graph->edge_count];
     for(int i = 0; i<NUMBER_OF_VERTICES; i++){
@@ -47,7 +54,6 @@ int greed_graph(Graph *graph){
 
     // We can do that due to the formula in score calculation
     calculate_greedy_score(graph);
-    //clean_memory(graph);
     if(graph->greed_integrity_score==NUMBER_OF_VERTICES){
         return 0;
     }
@@ -57,17 +63,19 @@ int greed_graph(Graph *graph){
 
 // Makes sure to find an integral graph
 void greed_integral_graph(){
-    Graph *graph;
     int found = 0;
+    Graph graph;
     while(!found){
-        found = greed_graph(graph);
+        initialize_graph(&graph);
+        found = greed_graph(&graph);
+        if (found) printf("Graph found\n");
+        clean_memory(&graph);
     }
-    save_graph(graph, "greed_integral_graph.txt");
 }
 
 // Makes sure to find all integral graphs
 void greed_all_integral_graph(){
-    while(1){
+    for(int i = 0; i<5; i++){
         greed_integral_graph();
     }
 }
