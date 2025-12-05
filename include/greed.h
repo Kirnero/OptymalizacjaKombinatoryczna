@@ -6,6 +6,7 @@
 
 // number of random edges to check when adding an edge to graph 
 extern int GREED_RAND_CANDIDATES;
+extern int GREED_TARGET_NUMBER;
 
 void greed_add_edge(Graph *graph, Edge *candidates, int candidates_count);
 int greed_graph(Graph *graph);

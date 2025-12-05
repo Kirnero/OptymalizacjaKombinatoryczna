@@ -29,8 +29,10 @@ void clean_memory(Graph *graph){
 // Wypisuje macierz sasiedztwa
 void printout(Graph *graph){
     for(int i = 0; i<NUMBER_OF_EDGES; i++){
-        printf("%d -- %d\n", graph->list_of_edges[i].u, graph->list_of_edges[i].v);
+        //printf("%d -- %d\n", graph->list_of_edges[i].u, graph->list_of_edges[i].v);
+        //for(int j = 0; j<NUMBER_OF_VERTICES; j++){printf("%d ", graph->matrix[i][j]);} printf("\n");
     }
+    printf("%f\n",graph->greed_integrity_score);
     printf("\n\n");
 }
 
@@ -49,8 +51,66 @@ void draw(Graph *graph){
     fclose(f);
 }
 
+int graph6_exists_in_file(char *filename, char *graph6) {
+    FILE *file = fopen(filename, "r");
+    if (!file) return 0;  // file doesn't exist → not present
+
+    char line[1024];
+    while (fgets(line, sizeof(line), file)) {
+        // strip newline
+        line[strcspn(line, "\r\n")] = '\0';
+
+        if (strcmp(line, graph6) == 0) {
+            fclose(file);
+            return 1;  // found
+        }
+    }
+    fclose(file);
+    return 0;  // not found
+}
+
 void save_graph(Graph *graph, char *filename){
-    printout(graph);
+    if(NUMBER_OF_VERTICES>62){
+        printf("Number of vertices too large to save in graph6 format\n");
+        return;
+    }
+    char results[40];
+    results[0] = (char)(NUMBER_OF_VERTICES + 63);
+
+    int current_byte = 0;
+    int bit_index = 0;
+    int buffer_index = 1;
+ 
+    for (int i = 0; i < NUMBER_OF_VERTICES; i++) {
+        for (int j = i + 1; j < NUMBER_OF_VERTICES; j++) {
+            int bit = graph->matrix[i][j]; 
+ 
+            current_byte = (current_byte << 1) | bit;
+            bit_index++;
+ 
+            if (bit_index == 6) {
+                results[buffer_index++] = (char)(current_byte + 63);
+                current_byte = 0;
+                bit_index = 0;
+            }
+        }
+    }
+ 
+    if (bit_index > 0) {
+        current_byte = current_byte << (6 - bit_index);
+        results[buffer_index++] = (char)(current_byte + 63);
+    }
+    results[buffer_index] = '\0';
+
+    if(graph6_exists_in_file(filename,results)) return;
+
+    FILE *file = fopen(filename,"a");
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+    fprintf(file, "%s\n", results);
+    fclose(file);
 }
 
 void swap_edges(Edge *a, Edge *b) {

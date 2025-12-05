@@ -29,7 +29,7 @@ void greed_add_edge(Graph *graph, Edge *candidates, int candidates_count){
 }
 
 // This function wants an absolutely empty, non-initialized Graph, just as a place to store results
-// Returns 0 if not integral, 1 if integral
+// Returns 1 if not integral, 0 if integral
 int greed_graph(Graph *graph){
     // Stworzenie grafu spojnego
     
@@ -55,10 +55,10 @@ int greed_graph(Graph *graph){
     // We can do that due to the formula in score calculation
     calculate_greedy_score(graph);
     if(graph->greed_integrity_score==NUMBER_OF_VERTICES){
-        return 0;
+        return 1;
     }
 
-    return 1;
+    return 0;
 }
 
 // Makes sure to find an integral graph
@@ -68,14 +68,18 @@ void greed_integral_graph(){
     while(!found){
         initialize_graph(&graph);
         found = greed_graph(&graph);
-        if (found) printf("Graph found\n");
+        if (found){
+            save_graph(&graph, "greed_graphs");
+            
+        }
+        printout(&graph);
         clean_memory(&graph);
     }
 }
 
 // Makes sure to find all integral graphs
 void greed_all_integral_graph(){
-    for(int i = 0; i<5; i++){
+    for(int i = 0; i<GREED_TARGET_NUMBER; i++){
         greed_integral_graph();
     }
 }
